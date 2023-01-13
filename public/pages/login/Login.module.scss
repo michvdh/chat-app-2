@@ -1,0 +1,35 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.login {
+  margin: auto auto;
+
+  .container {
+    width: 50rem;
+    padding: 5rem 1rem 8rem 1rem;
+    @include shadow-effect--dark;
+    position: relative;
+    border-radius: 0.5rem;
+    text-align: center;
+
+    h1 {
+      margin-bottom: 4rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 1.5rem;
+      width: 80%;
+      margin: 0 auto;
+
+      .btn {
+        width: 10rem;
+        margin: 0 auto;
+        font-weight: $fw--medium;
+        padding: 1rem 1.5rem;
+      }
+    }
+  }
+}

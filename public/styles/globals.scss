@@ -49,7 +49,15 @@ main {
   border: none;
   padding: 0.5rem 2rem;
   background-color: $light-gray;
+
+  &--light {
+    border: 1px solid $light-gray;
+    border-radius: 0.5rem;
+    padding: 0.5rem 2rem;
+  }
 }
+
+
 
 .btn {
   padding: 0.5rem 1rem;
@@ -61,5 +69,10 @@ main {
   &--dark {
     background-color: $teal;
     color: $white;
+    transition: all .2s;
+
+    &:hover {
+      background-color: $light-teal;
+    }
   }
 }
