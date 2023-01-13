@@ -2,6 +2,11 @@ import classes from "./Login.module.scss";
 import Head from "next/head";
 
 const Login = () => {
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(e);
+  }
+
   return (
     <>
       <Head>
@@ -14,7 +19,7 @@ const Login = () => {
         <div className={classes.login}>
           <div className={classes.container}>
             <h1>ASG Chat App</h1>
-            <form>
+            <form onSubmit={submitHandler}>
               <input
                 type="text"
                 placeholder="Username"
