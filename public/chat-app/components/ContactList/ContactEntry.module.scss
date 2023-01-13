@@ -1,0 +1,42 @@
+@import "../../styles/variables";
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  transition: all 0.15s;
+  border-radius: 1rem;
+
+  &:hover {
+    background-color: $light-gray;
+    cursor: pointer;
+  }
+
+  .contact {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+  }
+
+  .status {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    border-radius: 100%;
+  }
+
+  .username {
+    // font-size: ;
+  }
+}
+
+
+.new-chat {
+  background-color: $new;
+}
+
+.selected {
+  background-color: $selected;
+}

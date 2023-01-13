@@ -1,0 +1,15 @@
+@import "../../styles/variables";
+
+.chat-main {
+  position: relative;
+  padding: 0 1rem 1rem 1rem;
+  flex: 1;
+  // height: 10rem;
+  
+  .container {
+    // height: 85vh;
+    height: 100%;
+    background-color: $white;
+    overflow-y: auto;
+  }
+}

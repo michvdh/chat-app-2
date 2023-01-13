@@ -1,0 +1,65 @@
+@import "./variables";
+@import "./mixins";
+@import "./typography";
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  // color: $white;
+}
+
+body {
+  position: relative;
+  // background-color: $bluish-black;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+section {
+  // border: 1px solid gray;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  height: 100vh;
+  // flex: 1;
+  // height: 100%;
+
+  .chat--main {
+    width: 100%;
+    // background-color: burlywood;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.shadow {
+  @include shadow-effect--dark;
+}
+
+.input {
+  border-radius: 1rem;
+  outline: none;
+  border: none;
+  padding: 0.5rem 2rem;
+  background-color: $light-gray;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: $font--xs;
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+
+  &--dark {
+    background-color: $teal;
+    color: $white;
+  }
+}

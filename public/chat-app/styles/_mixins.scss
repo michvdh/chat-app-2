@@ -1,0 +1,17 @@
+@mixin shadow-effect--dark {
+  box-shadow: $shadow-dark;
+  -webkit-box-shadow: $shadow-dark;
+  -moz-box-shadow: $shadow-dark;
+}
+
+@mixin shadow-effect--dark-inset {
+  box-shadow: 0px 0px 6px 0px rgba(68,68,68,0.4) inset;
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(68,68,68,0.4) inset;
+  -moz-box-shadow: 0px 0px 6px 0px rgba(68,68,68,0.4) inset;
+}
+
+@mixin shadow-effect--light {
+  box-shadow: $shadow-light !important;
+  -webkit-box-shadow: $shadow-light !important;
+  -moz-box-shadow: $shadow-light !important;
+}

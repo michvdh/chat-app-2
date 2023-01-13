@@ -1,0 +1,23 @@
+@import "../../styles/variables";
+
+.chat-input {
+  position: relative;
+  padding: 1rem;
+
+  .container {
+
+    form {
+      width: 100%;
+      display: flex;
+      column-gap: 0.5rem;
+
+      input {
+        flex: 1;
+      }
+
+      button {
+        width: 5rem;
+      }
+    }
+  }
+}

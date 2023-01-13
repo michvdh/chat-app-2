@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+
+.contact-list {
+  // background-color: antiquewhite;
+  border-left: 1px solid $light-gray;
+  border-right: 1px solid $light-gray;
+  width: 35%;
+
+  .container {
+    padding: 1rem;
+  }
+
+  .top-functions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-bottom: 1rem;
+
+    .head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
