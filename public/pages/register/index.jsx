@@ -1,32 +1,53 @@
 import classes from "./Register.module.scss";
 import Head from "next/head";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { registerRoute } from "../api/APIRoutes";
 
-const Register = () => {  
+const Register = () => {
   const [values, setValues] = useState({
     username: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
-  console.log(values);
+  // const changeHandler = (event) => {
+  //   setValues({ ...values, [event.target.name]: event.target.value });
+  // }
 
-  const changeHandler = (e) => {
-    console.log("test");
-    setValues({ ...values, [e.target.name]: e.target.value});
-  }
+  // const submitHandler = async(e) => {
+  //   e.preventDefault();
 
-  const submitHandler = async(e) => {
-    e.preventDefault(); 
-    
-    console.log("in validation", registerRoute);
-    const {username, password, confirmPassword} = values;
-    const {data} = await axios.post(registerRoute, {
-      username, password, confirmPassword
+  //   console.log("in validation", registerRoute);
+  //   const {username, password, confirmPassword} = values;
+  //   const {data} = await axios.post(registerRoute, {
+  //     username, password, confirmPassword
+  //   });
+  // }
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    console.log(e.target[0].value);
+    setValues({
+      username: e.target[0].value,
+      password: e.target[1].value,
+      confirmPassword: e.target[2].value,
     });
-  }
+  };
+
+  useEffect(() => {
+    const registerData = async () => {
+      const { username, password, confirmPassword } = values;
+      const { data } = await axios.post(registerRoute, {
+        username,
+        password,
+        confirmPassword,
+      });
+    };
+
+    registerData();
+  }, [values]);
 
   return (
     <>
@@ -45,19 +66,22 @@ const Register = () => {
                 type="text"
                 placeholder="Username"
                 className={`input--light`}
-                onChange={changeHandler}
+                // onChange={(e) => changeHandler(e)}
+                // onChange={changeHandler}
               />
-              <input 
-                type="password" 
-                placeholder="Password" 
+              <input
+                type="password"
+                placeholder="Password"
                 className={`input--light`}
-                onChange={changeHandler}
+                // onChange={(e) => changeHandler(e)}
+                // onChange={changeHandler}
               />
-              <input 
-                type="password" 
-                placeholder="Confirm Password" 
+              <input
+                type="password"
+                placeholder="Confirm Password"
                 className={`input--light`}
-                onChange={changeHandler}
+                // onChange={(e) => changeHandler(e)}
+                // onChange={changeHandler}
               />
               <button type="submit" className={`${classes.btn} btn btn--dark`}>
                 Create Account
