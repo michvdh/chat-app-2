@@ -1,8 +1,8 @@
 import classes from "./ContactEntry.module.scss";
 
-const ContactEntry = () => {
+const ContactEntry = (props) => {
   return (
-    <li className={classes.item}>
+    <li className={`${classes.item} ${props.className}`}>
       <div className={classes.contact}>
         <svg
           width="24"
@@ -22,7 +22,7 @@ const ContactEntry = () => {
             fill="currentColor"
           />
         </svg>
-        <span className={classes.username}>contactUsername</span>
+        <span className={classes.username}>{props.username}</span>
       </div>
       <span className={`${classes["status"]} ${classes["new-chat"]}`}></span>
       {/* you can put a blue colored circle for new chats */}

@@ -35,6 +35,10 @@ const Register = () => {
 
   useEffect(() => {
     if (initRender) {
+      if (localStorage.getItem("chat-app-user")) {
+        router.push('/');
+      }
+      
       setInitRender(false);
     }
 

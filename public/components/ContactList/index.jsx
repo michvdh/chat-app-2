@@ -1,7 +1,23 @@
 import ContactEntry from "./ContactEntry";
 import classes from "./ContactList.module.scss";
+import React, {useState, useEffect} from "react";
 
-const ContactList = () => {
+const ContactList = ({contacts, currentUser}) => {
+  const [currentUsername, setCurrentUsername] = useState(undefined);
+  const [currentSelected, setCurrentSelected] = useState(undefined);
+
+  console.log(contacts);
+
+  useEffect(() => {
+    if (currentUser) {
+      setCurrentUsername(currentUser.username);
+    }
+  }, [currentUser]);
+
+  const changeCurrentChat = (index, contact) => {
+
+  }
+
   return (
     <section className={`${classes['contact-list']}`}>
       <div className={classes.container}>
@@ -16,7 +32,60 @@ const ContactList = () => {
 
         <div className={classes['chat-contacts']}>
           <ul>
-            <ContactEntry />
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
+            {currentUsername &&
+              contacts.map((contact, index) => (
+                <ContactEntry 
+                  key={index} 
+                  className={index === currentSelected ? classes.selected : ''} 
+                  username={contact.username}
+                />
+              ))
+            }
           </ul>
         </div>
       </div>

@@ -23,11 +23,15 @@ const Login = () => {
     setValues({
       username: e.target[0].value,
       password: e.target[1].value
-    })
+    });
   }
 
   useEffect(() => {
     if (initRender) {
+      if (localStorage.getItem("chat-app-user")) {
+        router.push('/');
+      }
+
       setInitRender(false);
     }
 
@@ -44,6 +48,7 @@ const Login = () => {
         }
 
         if (data.status === true) {
+          localStorage.setItem("chat-app-user", JSON.stringify(data.user));
           router.push('/');
         }
       }
@@ -77,7 +82,7 @@ const Login = () => {
                 className={`input--light`}
               />
               <button type="submit" className={`${classes.btn} btn btn--dark`}>
-                LOG IN
+                Log in
               </button>
             </form>
             <p className={classes.signup}>Don&apos;t have an account? <Link href={{pathname:`/register`}}><span>Sign up</span></Link></p>

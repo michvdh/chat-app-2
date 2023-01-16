@@ -5,12 +5,42 @@ import SideNav from '@/components/SideNav'
 import ContactList from '@/components/ContactList'
 import ChatInput from '@/components/main/ChatInput'
 import ChatMain from '@/components/main/ChatMain'
-import ChatMainHeader from '@/components/main/ChatMainHeader'
-// import styles from '@/styles/Home.module.css'
+import ChatMainHeader from '@/components/main/ChatMainHeader';
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import { useRouter } from 'next/router'
+import { allUsersRoute } from './api/APIRoutes'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const router = useRouter();
+  const [contacts, setContacts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(undefined);
+  
+  useEffect(() => {
+    const accessLocalStorage = async () => {
+      if (!localStorage.getItem("chat-app-user")) {
+        router.push('/login')
+      } else {
+        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
+      }
+    }
+
+    accessLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    const getContacts = async () => {
+      if (currentUser) {
+        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+        setContacts(data.data);
+      }
+    };
+
+    getContacts();
+  }, [currentUser]);
+
   return (
     <>
       <Head>
@@ -21,7 +51,7 @@ export default function Home() {
       </Head>
       <main>
         <SideNav />
-        <ContactList />
+        <ContactList contacts={contacts} currentUser={currentUser} />
         <div className='chat--main'>
           <ChatMainHeader />
           <ChatMain /> 
