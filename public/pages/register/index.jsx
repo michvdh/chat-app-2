@@ -3,6 +3,8 @@ import Head from "next/head";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { registerRoute } from "../api/APIRoutes";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -11,42 +13,51 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  // const changeHandler = (event) => {
-  //   setValues({ ...values, [event.target.name]: event.target.value });
-  // }
+  // const [inputIsValid, setInputIsValid] = useState(false);
 
-  // const submitHandler = async(e) => {
-  //   e.preventDefault();
+  const [initRender, setInitRender] = useState(true);
+  const router = useRouter();
 
-  //   console.log("in validation", registerRoute);
-  //   const {username, password, confirmPassword} = values;
-  //   const {data} = await axios.post(registerRoute, {
-  //     username, password, confirmPassword
-  //   });
-  // }
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     console.log(e.target[0].value);
+
     setValues({
       username: e.target[0].value,
       password: e.target[1].value,
       confirmPassword: e.target[2].value,
     });
+
+    // setInputIsValid(true);  
   };
 
   useEffect(() => {
-    const registerData = async () => {
-      const { username, password, confirmPassword } = values;
-      const { data } = await axios.post(registerRoute, {
-        username,
-        password,
-        confirmPassword,
-      });
-    };
+    if (initRender) {
+      setInitRender(false);
+    }
 
-    registerData();
+    if (!initRender) {
+      const registerData = async () => {
+        const { username, password, confirmPassword } = values;
+        const { data } = await axios.post(registerRoute, {
+          username,
+          password,
+          confirmPassword,
+        });
+
+        if (data.status === false) {
+          console.log(data.msg);
+        }
+
+        if (data.status === true) {
+          router.push('/login');
+        } 
+      };
+  
+      registerData();
+    }
   }, [values]);
 
   return (
@@ -84,9 +95,10 @@ const Register = () => {
                 // onChange={changeHandler}
               />
               <button type="submit" className={`${classes.btn} btn btn--dark`}>
-                Create Account
+                  Create Account
               </button>
             </form>
+            <p className={classes.login}>Already have an account? <Link href={{pathname:`/login`}}><span>Log in</span></Link></p>
           </div>
         </div>
       </main>

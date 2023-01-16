@@ -29,6 +29,21 @@
         margin: 0 auto;
         font-weight: $fw--medium;
         padding: 1rem 1.5rem;
+        text-transform: uppercase;
+      }
+
+      margin-bottom: 3rem;
+    }
+
+    .login {
+      color: $dark-gray;
+
+      span {
+        color: $new;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }

@@ -1,11 +1,56 @@
 import classes from "./Login.module.scss";
 import Head from "next/head";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { loginRoute } from "../api/APIRoutes";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  const [values, setValues] = useState({
+    username: "",
+    password: ""
+  });
+
+  const [initRender, setInitRender] = useState(true);
+
+  const router = useRouter();
+  // const pathname = router.pathname;
+
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(e);
+
+    setValues({
+      username: e.target[0].value,
+      password: e.target[1].value
+    })
   }
+
+  useEffect(() => {
+    if (initRender) {
+      setInitRender(false);
+    }
+
+    if (!initRender) {
+      const loginAccount = async () => {
+        const {username, password} = values;
+        const {data} = await axios.post(loginRoute, {
+          username,
+          password
+        });
+
+        if (data.status === false) {
+          console.log(data.msg);
+        }
+
+        if (data.status === true) {
+          router.push('/');
+        }
+      }
+
+      loginAccount();
+    }
+  }, [values]);
 
   return (
     <>
@@ -24,6 +69,7 @@ const Login = () => {
                 type="text"
                 placeholder="Username"
                 className={`input--light`}
+                min="3"
               />
               <input 
                 type="password" 
@@ -34,6 +80,7 @@ const Login = () => {
                 LOG IN
               </button>
             </form>
+            <p className={classes.signup}>Don&apos;t have an account? <Link href={{pathname:`/register`}}><span>Sign up</span></Link></p>
           </div>
         </div>
       </main>
