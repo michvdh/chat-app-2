@@ -2,7 +2,7 @@ import classes from "./ContactEntry.module.scss";
 
 const ContactEntry = (props) => {
   return (
-    <li className={`${classes.item} ${props.className}`}>
+    <li className={`${classes.item} ${props.className}`} onClick={props.onClick}>
       <div className={classes.contact}>
         <svg
           width="24"

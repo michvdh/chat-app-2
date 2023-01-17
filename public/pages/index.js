@@ -1,31 +1,44 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import SideNav from '@/components/SideNav'
-import ContactList from '@/components/ContactList'
-import ChatInput from '@/components/main/ChatInput'
-import ChatMain from '@/components/main/ChatMain'
-import ChatMainHeader from '@/components/main/ChatMainHeader';
-import React, {useState, useEffect} from "react";
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import SideNav from "@/components/SideNav";
+import ContactList from "@/components/ContactList";
+import ChatMain from "@/components/main/ChatMain";
+import ChatMainHeader from "@/components/main/ChatMainHeader";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import { useRouter } from 'next/router'
-import { allUsersRoute } from './api/APIRoutes'
+import { useRouter } from "next/router";
+import { allUsersRoute } from "./api/APIRoutes";
+import Welcome from "@/components/main/Welcome";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  // This is the Chat Page where user is currently logged in
+
   const router = useRouter();
   const [contacts, setContacts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(undefined);
-  
+
+  const [currentUser, setCurrentUser] = useState(undefined); 
+    // this is your account
+
+  const [currentChat, setCurrentChat] = useState(undefined);
+    // this is the person you're chatting
+
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const changeChatHandler = (chat) => {
+    setCurrentChat(chat);
+  };
+
   useEffect(() => {
     const accessLocalStorage = async () => {
       if (!localStorage.getItem("chat-app-user")) {
-        router.push('/login')
+        router.push("/login");
       } else {
         setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
       }
-    }
+    };
 
     accessLocalStorage();
   }, []);
@@ -39,6 +52,7 @@ export default function Home() {
     };
 
     getContacts();
+    setIsLoaded(true);
   }, [currentUser]);
 
   return (
@@ -51,13 +65,27 @@ export default function Home() {
       </Head>
       <main>
         <SideNav />
-        <ContactList contacts={contacts} currentUser={currentUser} />
-        <div className='chat--main'>
-          <ChatMainHeader />
-          <ChatMain /> 
-          <ChatInput />
+        <ContactList
+          contacts={contacts}
+          currentUser={currentUser}
+          changeChat={changeChatHandler}
+        />
+        <div className="chat--main">
+          <ChatMainHeader currentChat={isLoaded && currentChat ? currentChat.username : ''}/>
+
+          {isLoaded && currentChat === undefined ? 
+            <Welcome currentUser={currentUser} />
+            :
+            <Fragment>
+              <ChatMain 
+                currentUser={currentUser} 
+                currentChat={currentChat}
+              />
+            </Fragment> 
+          }
+          
         </div>
       </main>
     </>
-  )
+  );
 }

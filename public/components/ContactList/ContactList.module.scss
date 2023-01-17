@@ -31,19 +31,25 @@
     }
   
     .chat-contacts {
-      // flex-grow: 1;
+      // width: 20rem;
       min-height: 1rem;
-      overflow-y: scroll;
+      overflow: auto;
+      // &::-webkit-scrollbar {
+      //   width: 0.2rem;
+      //   &-thumb {
+      //     background-color: #ffffff39;
+      //     width: 0.1rem;
+      //     border-radius: 1rem;
+      //   }
+      // }
       
       ul {
-        
-        
+        // width: 90%;
         .selected {
-          background-color: $selected;
+          background-color: $light-gray;
         }
       }
     }
   }
-
-  
 }
+

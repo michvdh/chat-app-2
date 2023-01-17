@@ -76,3 +76,22 @@ main {
     }
   }
 }
+
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+
+  &--white {
+    fill: $white;
+  }
+
+  &--yellow {
+    fill: $yellow;
+  }
+}
+
+.EmojiPickerReact {
+  position: absolute !important;
+  top: -475px ;
+}
