@@ -5,13 +5,56 @@
   position: relative;
   padding: 0 1rem 1rem 1rem;
   flex: 1;
-  // height: 10rem;
+  overflow: hidden;
   
   .container {
-    // height: 85vh;
     height: 100%;
     background-color: $light-gray;
-    overflow-y: auto;
+    overflow: auto;
+
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      
+
+      .msg--row {
+        display: flex;
+        // justify-content: flex-end;
+
+        .msg {
+          display: flex;
+          flex-direction: column;
+          max-width: 40%;
+          overflow-wrap: break-word;
+          margin: 2rem;
+          
+          .content {
+            min-width: 1rem;
+            
+            padding: 1rem;
+            position: relative;
+            // margin: 2rem;
+          }
+        }
+      }
+      
+
+      .sent-by-you {
+        justify-content: flex-end;
+
+        .msg {
+          background-color: lightblue;
+        }
+      }
+
+      .received-by-you {
+        justify-content: flex-start;
+
+        .msg {
+          background-color: burlywood;
+        }
+      }
+    }
   }
 }
 
