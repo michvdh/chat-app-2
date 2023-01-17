@@ -9,7 +9,7 @@
   
   .container {
     height: 100%;
-    background-color: $light-gray;
+    // background-color: $light-gray;
     overflow: auto;
 
     .chat-messages {
@@ -27,6 +27,7 @@
           max-width: 40%;
           overflow-wrap: break-word;
           margin: 2rem;
+          border-radius: 0.5rem;
           
           .content {
             min-width: 1rem;
