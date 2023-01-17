@@ -19,6 +19,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "sass": "^1.57.1",
-    "styled-components": "^5.3.6"
+    "socket.io-client": "^4.5.4",
+    "styled-components": "^5.3.6",
+    "uuid": "^9.0.0"
   }
 }

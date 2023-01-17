@@ -1,17 +1,20 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import classes from "./ChatMain.module.scss";
 import EmojiPicker from "emoji-picker-react";
 import { IoMdSend } from "react-icons/io";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import axios from "axios";
 import { getMessagesRoute, sendMessageRoute } from "@/pages/api/APIRoutes";
+import {v4 as uuidv4} from "uuid";
 // import dynamic from 'next/dynamic';
 
-const ChatMain = ({ currentUser, currentChat }) => {
+const ChatMain = ({ currentUser, currentChat, socket }) => {
   const [message, setMessage] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [messagesFromDB, setMessagesFromDB] = useState([]);
   const [initialRender, setInitialRender] = useState(true);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const scrollRef = useRef();
 
   // const Picker = dynamic(
   //   () => {
@@ -28,7 +31,6 @@ const ChatMain = ({ currentUser, currentChat }) => {
 
   const emojiClickHandler = (emojiData, event) => {
     let msg = message;
-    console.log(emojiData);
     msg += emojiData.emoji;
     setMessage(msg);
   };
@@ -46,22 +48,57 @@ const ChatMain = ({ currentUser, currentChat }) => {
   };
 
   const sentMessageHandler = async (msg) => {
-    console.log(msg);
-    console.log(currentUser._id);
-    console.log(currentChat._id);
+
     await axios.post(sendMessageRoute, {
       from: currentUser._id,
       to: currentChat._id,
       message: msg,
     });
+
+    socket.current.emit("send-msg", {
+      to: currentChat._id,
+      from: currentUser._id,
+      message: msg
+    });
+
+    const msgs = [...messagesFromDB];
+    msgs.push({
+      fromSelf:true,
+      message: msg
+    });
+    setMessagesFromDB(msgs);
   };
+
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("msg-received", (msg) => {
+        setArrivalMessage({
+          fromSelf: false,
+          message: msg
+        });
+      });
+    }
+  }, []);
+
+
+  useEffect(() => {
+    arrivalMessage && setMessagesFromDB((prev) => ( [...prev, arrivalMessage] ));
+  }, [arrivalMessage]);
+
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behaviour: "smooth"
+    })
+  }, [messagesFromDB])
+
 
   useEffect(() => {
     if (initialRender) {
       setInitialRender(false);
     }
 
-    if (!initialRender) {
+    if (!initialRender && currentChat) {
       const getMessages = async () => {
         const res = await axios.post(getMessagesRoute, {
           from: currentUser._id,
@@ -75,7 +112,6 @@ const ChatMain = ({ currentUser, currentChat }) => {
     }
   }, [currentChat]);
 
-  console.log(messagesFromDB);
 
   return (
     <Fragment>
@@ -84,16 +120,15 @@ const ChatMain = ({ currentUser, currentChat }) => {
           <div className={classes["chat-messages"]}>
             {messagesFromDB.map((msg, index) => {
               return (
-                <div key={index} className={`${classes['msg--row']} ${
+                <div ref={scrollRef} key={uuidv4()} className={`${classes['msg--row']} ${
                   msg.fromSelf
                     ? classes["sent-by-you"]
                     : classes["received-by-you"]
                 }`}>
                   <div
-                    key={index}
                     className={`${classes.msg}`}
                   >
-                    <p key={index} className={classes.content}>
+                    <p className={classes.content}>
                       {msg.message}
                     </p>
                   </div>

@@ -38,10 +38,12 @@ const Login = () => {
     if (!initRender) {
       const loginAccount = async () => {
         const {username, password} = values;
+        
         const {data} = await axios.post(loginRoute, {
           username,
           password
         });
+
 
         if (data.status === false) {
           console.log(data.msg);

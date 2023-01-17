@@ -5,17 +5,19 @@ import SideNav from "@/components/SideNav";
 import ContactList from "@/components/ContactList";
 import ChatMain from "@/components/main/ChatMain";
 import ChatMainHeader from "@/components/main/ChatMainHeader";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { allUsersRoute } from "./api/APIRoutes";
+import { allUsersRoute, host } from "./api/APIRoutes";
 import Welcome from "@/components/main/Welcome";
+import {io} from "socket.io-client";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   // This is the Chat Page where user is currently logged in
 
+  const socket = useRef();
   const router = useRouter();
   const [contacts, setContacts] = useState([]);
 
@@ -25,11 +27,14 @@ export default function Home() {
   const [currentChat, setCurrentChat] = useState(undefined);
     // this is the person you're chatting
 
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
+  const [initialRender, setInitalRender] = useState(true);
+
 
   const changeChatHandler = (chat) => {
     setCurrentChat(chat);
   };
+
 
   useEffect(() => {
     const accessLocalStorage = async () => {
@@ -43,16 +48,31 @@ export default function Home() {
     accessLocalStorage();
   }, []);
 
-  useEffect(() => {
-    const getContacts = async () => {
-      if (currentUser) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setContacts(data.data);
-      }
-    };
 
-    getContacts();
-    setIsLoaded(true);
+  useEffect(() => {
+    if (currentUser) {
+      socket.current = io(host);
+      socket.current.emit("add-user", currentUser._id);
+    }
+  }, [currentUser]);
+
+
+  useEffect(() => {
+    if (initialRender) {
+      setInitalRender(false);
+    }
+
+    if (!initialRender) {
+      const getContacts = async () => {
+        if (currentUser) {
+          const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+          setContacts(data.data);
+        }
+      };
+  
+      getContacts();
+    }
+
   }, [currentUser]);
 
   return (
@@ -71,15 +91,16 @@ export default function Home() {
           changeChat={changeChatHandler}
         />
         <div className="chat--main">
-          <ChatMainHeader currentChat={isLoaded && currentChat ? currentChat.username : ''}/>
+          <ChatMainHeader currentChat={!initialRender && currentChat ? currentChat.username : ''}/>
 
-          {isLoaded && currentChat === undefined ? 
+          {!initialRender && currentChat === undefined ? 
             <Welcome currentUser={currentUser} />
             :
             <Fragment>
               <ChatMain 
                 currentUser={currentUser} 
                 currentChat={currentChat}
+                socket={socket}
               />
             </Fragment> 
           }

@@ -24,7 +24,7 @@ const ContactEntry = (props) => {
         </svg>
         <span className={classes.username}>{props.username}</span>
       </div>
-      <span className={`${classes["status"]} ${classes["new-chat"]}`}></span>
+      {/* <span className={`${classes["status"]} ${classes["new-chat"]}`}></span> */}
       {/* you can put a blue colored circle for new chats */}
       {/* you can put a gray colored circle for select chat */}
     </li>
